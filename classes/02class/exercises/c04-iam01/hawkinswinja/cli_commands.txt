@@ -1,0 +1,67 @@
+- command to create new user
+    ```
+    aws iam create-user --user-name user_readonly_S3
+    ```
+    
+- command to create new policy called S3readOnly
+    ```
+    cat s3-policy.json
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+           {
+                "Effect": "Allow",
+                "Action": [
+                    "s3:Get*",
+                    "s3:List*"
+                ],
+                "Resource": "*"
+            }
+        ]
+    }
+    
+    aws iam create-policy \
+    > --policy-name S3readOnly \
+    > --policy-document file://s3-policy.json
+    {
+        "Policy": {
+            "PolicyName": "S3readOnly",
+            "PolicyId": "ANPAYU3DRPZRE4K73C3WM",
+            "Arn": "arn:aws:iam::594524864098:policy/S3readOnly",
+            "Path": "/",
+            "DefaultVersionId": "v1",
+            "AttachmentCount": 0,
+            "PermissionsBoundaryUsageCount": 0,
+            "IsAttachable": true,
+            "CreateDate": "2023-09-25T17:39:01+00:00",
+            "UpdateDate": "2023-09-25T17:39:01+00:00"
+        }
+    }
+    ```
+- command to attach policy to user
+    ```
+    aws iam attach-user-policy --user-name user_readonly_s3 --policy-arn arn:aws:iam::594524864098:policy/S3readOnly
+    ```
+    
+- command to create a new access key for the user
+    ```
+    aws iam create-access-key --user-name user_readonly_S3
+    {
+        "AccessKey": {
+            "UserName": "user_readonly_S3",
+            "AccessKeyId": "<access-key id>",
+            "Status": "Active",
+            "SecretAccessKey": "<secret key>",
+            "CreateDate": "2023-09-25T17:48:31+00:00"
+        }
+    }
+    ```
+    
+- command to configure profile credentials
+
+    ```
+    aws configure --profile s3ReadOnlyProfile
+    
+    # check user permissions
+    aws s3 ls --profile s3ReadOnlyProfile
+    ```
