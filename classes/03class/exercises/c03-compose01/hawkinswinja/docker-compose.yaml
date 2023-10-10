@@ -1,0 +1,24 @@
+version: '3'
+services:
+  db:
+    image:  mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: test
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: test
+  web:
+    build: ~/academy/classes/03class/compose/artifacts/c05-compose01
+    ports:
+      - 8100:80
+    depends_on:
+      - db
+    environment:
+      DB_USER: test
+      DB_PASS: root
+      DB_HOST: db
+      DB: test
+    volumes:
+      - ~/academy/classes/03class/compose/artifacts/c05-compose01/src/:/var/www/html/
