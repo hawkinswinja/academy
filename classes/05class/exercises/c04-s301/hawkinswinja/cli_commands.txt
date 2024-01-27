@@ -1,0 +1,16 @@
+$ aws s3 mb s3://hawkinswinja2024 --region ap-southeast-2
+make_bucket: hawkinswinja2024
+
+$ aws s3 cp index.html s3://hawkinswinja2024
+upload: ./index.html to s3://hawkinswinja2024/index.html
+
+$ aws s3 website s3://hawkinswinja2024 --index-document index.htm
+
+# aws enables blocking all public access policies by default therefore we need to remove it first to apply our public policy
+$ aws s3api delete-public-access-block --bucket hawkinswinja2024
+$ aws s3api put-bucket-policy --bucket hawkinswinja2024 --policy file://s3_bucket_policy.json
+
+# remove the buckets and all its contents
+$ aws s3 rb s3://hawkinswinja2024 --force
+delete: s3://hawkinswinja2024/index.html
+remove_bucket: hawkinswinja2024 
